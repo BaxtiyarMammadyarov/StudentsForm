@@ -1,5 +1,6 @@
 package az.mycompany.studentsform.service;
 
+import az.mycompany.studentsform.dto.RegistrationRequest;
 import az.mycompany.studentsform.dto.StudentDto;
 import org.springframework.stereotype.Service;
 
@@ -10,5 +11,5 @@ public interface StudentService {
 
     public List<StudentDto> getAllStudent();
 
-    public void add(StudentDto dto);
+    public void add(RegistrationRequest request);
 }

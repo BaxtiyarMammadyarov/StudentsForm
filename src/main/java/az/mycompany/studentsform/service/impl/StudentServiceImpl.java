@@ -1,6 +1,7 @@
 package az.mycompany.studentsform.service.impl;
 
 import az.mycompany.studentsform.dto.Course;
+import az.mycompany.studentsform.dto.RegistrationRequest;
 import az.mycompany.studentsform.dto.StudentDto;
 import az.mycompany.studentsform.entity.CourseEntity;
 import az.mycompany.studentsform.entity.StudentEntity;
@@ -31,18 +32,18 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public void add(StudentDto dto) {
+    public void add(RegistrationRequest dto) {
         if(studentRepo.existsByPhone(dto.getPhone())){
             throw new RuntimeException("phone alride exist");
         }
         else if(studentRepo.existsByAddress(dto.getAddress())){
             throw new RuntimeException("Address alride exist");
         }else{
-            CourseEntity course=courseRepo.findByCourseName(dto.getCourse().getCourseName());
+            CourseEntity course=courseRepo.findByCourseName(dto.getCourseName());
 
             if(course==null){
                 CourseEntity courseEntity=CourseEntity.builder()
-                        .courseName(dto.getCourse().getCourseName())
+                        .courseName(dto.getCourseName())
                         .build();
                 courseEntity=courseRepo.save(courseEntity);
                 StudentEntity studentEntity= dtoToEntity(dto);
@@ -59,14 +60,14 @@ public class StudentServiceImpl implements StudentService {
 
 
     }
-    private StudentEntity dtoToEntity(StudentDto dto){
+    private StudentEntity dtoToEntity(RegistrationRequest dto){
 
         return  new StudentEntity().builder()
                 .name(dto.getName())
                 .surname(dto.getSurname())
                 .address(dto.getAddress())
                 .phone(dto.getPhone())
-                .course(new CourseEntity(dto.getId(),dto.getCourse().getCourseName()))
+                .course(new CourseEntity(0L,dto.getCourseName()))
                 .build();
     }
     private StudentDto entityToDto(StudentEntity entity){
