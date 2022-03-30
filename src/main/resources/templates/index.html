@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Home</title>
+</head>
+<body>
+<h3><a href="/students/registration">Registration</a></h3>
+<table>
+    <tr th:each="student:${students}">
+        <td th:text="${student.getName()}"></td>
+        <td th:text="${student.getSurname()}"></td>
+        <td th:text="${student.getPhone()}"></td>
+        <td th:text="${student.getAddress()}"></td>
+        <td th:text="${student.getCourse().getCourseName()}"></td>
+
+    </tr>
+</table>
+</body>
+</html>
