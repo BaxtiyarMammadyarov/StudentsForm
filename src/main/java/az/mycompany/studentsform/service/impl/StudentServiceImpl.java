@@ -28,11 +28,14 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<StudentDto> getAllStudent() {
+        List<StudentDto>list=studentRepo.findAll().stream().map(this::entityToDto).collect(Collectors.toList());
+        System.out.println(list.toString());
         return studentRepo.findAll().stream().map(this::entityToDto).collect(Collectors.toList());
     }
 
     @Override
     public void add(RegistrationRequest dto) {
+        System.out.println(dto);
         if(studentRepo.existsByPhone(dto.getPhone())){
             throw new RuntimeException("phone alride exist");
         }
@@ -61,23 +64,23 @@ public class StudentServiceImpl implements StudentService {
 
     }
     private StudentEntity dtoToEntity(RegistrationRequest dto){
-
-        return  new StudentEntity().builder()
-                .name(dto.getName())
-                .surname(dto.getSurname())
-                .address(dto.getAddress())
-                .phone(dto.getPhone())
-                .course(new CourseEntity(0L,dto.getCourseName()))
-                .build();
+          StudentEntity entity=new StudentEntity();
+          entity.setName(dto.getName());
+          entity.setSurname(dto.getSurname());
+          entity.setCourse(new CourseEntity(1l,dto.getCourseName()));
+          entity.setAddress(dto.getAddress());
+          entity.setPhone(dto.getPhone());
+        return  entity;
     }
     private StudentDto entityToDto(StudentEntity entity){
-        return new StudentDto().builder()
-                .name(entity.getName())
-                .surname(entity.getSurname())
-                .address(entity.getAddress())
-                .phone(entity.getPhone())
-                .course(new Course(entity.getCourse().getId(),entity.getCourse().getCourseName()))
-                .build();
+        StudentDto dto=new StudentDto();
+        dto.setName(entity.getName());
+        dto.setSurname(entity.getSurname());
+        dto.setAddress(entity.getAddress());
+        dto.setCourse(new Course(entity.getCourse().getId(),entity.getCourse().getCourseName()));
+        dto.setPhone(entity.getPhone());
+
+        return dto;
     }
     @PostConstruct
     private void intStudent(){
